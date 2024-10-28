@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LiushuiDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.odd as odd
+        ,a.cz_types as czTypes
+        ,a.yh_types as yhTypes
+        ,a.sf_types as sfTypes
+        ,a.maxMoney as maxMoney
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.LiushuiView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Liushui  a
+        <where>
+            <if test=" params.odd != '' and params.odd != null and params.odd != 'null' ">
+                and a.odd like CONCAT('%',#{params.odd},'%')
+            </if>
+            <if test=" params.czTypes != '' and params.czTypes != null and params.czTypes != 'null' ">
+                and a.cz_types = #{params.czTypes}
+            </if>
+            <if test=" params.sfTypes != '' and params.sfTypes != null and params.sfTypes != 'null' ">
+                and a.sf_types = #{params.sfTypes}
+            </if>
+            <if test=" params.createTimeStart != '' and params.createTimeStart != null and params.createTimeStart != 'null' ">
+                and a.maxMoney &gt;= #{params.createTimeStart}
+            </if>
+            <if test=" params.createTimeEnd != '' and params.createTimeEnd != null and params.createTimeEnd != 'null' ">
+                and a.maxMoney &lt;= #{params.createTimeEnd}
+            </if>
+            <if test=" params.yh != '' and params.yh != null">
+                and a.yh_types = #{params.yh}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

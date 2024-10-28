@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CaipinDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.hx_types as hxTypes
+        ,a.money as money
+        ,a.img_photo as imgPhoto
+        ,a.caipin_content as caipinContent
+        ,a.clicknum as clicknum
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.CaipinView" >
+        SELECT
+        <include refid="Base_Column_List" />,b.name as caiming
+        FROM Caipin  a left join kuchuen b on a.hx_types = b.id
+        <where>
+            <if test=" params.hxTypes != '' and params.hxTypes != null and params.hxTypes != 'null' ">
+                and a.hx_types = #{params.hxTypes}
+            </if>
+            <if test=" params.moneyStart != '' and params.moneyStart != null and params.moneyStart != 'null' ">
+                and a.money >= #{params.moneyStart}
+            </if>
+            <if test=" params.moneyEnd != '' and params.moneyEnd != null and params.moneyEnd != 'null' ">
+                and a.money &lt;= #{params.moneyEnd}
+            </if>
+            <if test=" params.shangpinmingcheng != '' and params.shangpinmingcheng != null and params.shangpinmingcheng != 'null' ">
+                and b.name like CONCAT('%',#{params.shangpinmingcheng},'%')
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

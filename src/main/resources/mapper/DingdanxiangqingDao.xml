@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DingdanxiangqingDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.odd as odd
+        ,a.hx_types as hxTypes
+        ,a.number as number
+        ,a.money as money
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.DingdanxiangqingView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Dingdanxiangqing  a
+        <where>
+            <if test=" params.odd != '' and params.odd != null and params.odd != 'null' ">
+                and a.odd like CONCAT('%',#{params.odd},'%')
+            </if>
+            <if test=" params.hxTypes != '' and params.hxTypes != null and params.hxTypes != 'null' ">
+                and a.hx_types = #{params.hxTypes}
+            </if>
+            <if test=" params.number != '' and params.number != null and params.number != 'null' ">
+                and a.number = #{params.number}
+            </if>
+            <if test=" params.moneyStart != '' and params.moneyStart != null and params.moneyStart != 'null' ">
+                and a.money &gt;= #{params.moneyStart}
+            </if>
+            <if test=" params.moneyEnd != '' and params.moneyEnd != null and params.moneyEnd != 'null' ">
+                and a.money &lt;= #{params.moneyEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

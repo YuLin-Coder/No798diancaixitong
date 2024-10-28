@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.CanzhuoDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.name as name
+        ,a.tableLocation as tableLocation
+        ,a.sf_types as sfTypes
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.CanzhuoView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Canzhuo  a
+        <where>
+            <if test=" params.name != '' and params.name != null and params.name != 'null' ">
+                and a.name like CONCAT('%',#{params.name},'%')
+            </if>
+            <if test=" params.tableLocation != '' and params.tableLocation != null and params.tableLocation != 'null' ">
+                and a.tableLocation like CONCAT('%',#{params.tableLocation},'%')
+            </if>
+            <if test=" params.sfTypes != '' and params.sfTypes != null and params.sfTypes != 'null' ">
+                and a.sf_types = #{params.sfTypes}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>
